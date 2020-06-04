@@ -8,7 +8,7 @@ namespace Core.Data
     {
         public StoreContext(DbContextOptions<StoreContext> options) : base(options) { }
         
-        public DbSet<Products> Products { get; set; }
+        public DbSet<Product> Products { get; set; }
     }
 
 }
