@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using API.Dtos;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
@@ -25,7 +27,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> GetProductsAsync()
+        public async Task<ActionResult<List<ProductToReturnDto>>> GetProductsAsync()
         {
             
             // ReSharper disable once SuggestVarOrType_SimpleTypes
@@ -33,18 +35,36 @@ namespace API.Controllers
             
             IReadOnlyList<Product> products = await _productsRepo.ListAsync(spec);
 
-            return Ok(products);
+            return products.Select(product => new ProductToReturnDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                PictureUrl = product.PictureUrl,
+                Price =  product.Price,
+                ProductBrand =  product.ProductBrand.Name,
+                ProductType = product.ProductType.Name
+            }).ToList();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
         {
             // ReSharper disable once SuggestVarOrType_SimpleTypes
             var spec = new ProductsWithTypesAndBrandsSpecification(id);
             
             Product product = await _productsRepo.GetEntityWithSpec(spec);
 
-            return Ok(product);
+            return new ProductToReturnDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                PictureUrl = product.PictureUrl,
+                Price =  product.Price,
+                ProductBrand =  product.ProductBrand.Name,
+                ProductType = product.ProductType.Name
+            };
         }
 
         [HttpGet("brands")]
