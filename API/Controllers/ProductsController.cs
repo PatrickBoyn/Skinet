@@ -39,7 +39,10 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            Product product = await _productsRepo.GetByIdAsync(id);
+            // ReSharper disable once SuggestVarOrType_SimpleTypes
+            var spec = new ProductsWithTypesAndBrandsSpecification(id);
+            
+            Product product = await _productsRepo.GetEntityWithSpec(spec);
 
             return Ok(product);
         }
