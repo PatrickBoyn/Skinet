@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿using API.Errors;
 using Core.Entities;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +19,9 @@ namespace API.Controllers
 
            if (thing == null)
            {
-               return NotFound();
+               return NotFound(new ApiResponse(404));
            }
-            return Ok();
+           return Ok();
         }
         
         [HttpGet("servererror")]
@@ -37,7 +37,7 @@ namespace API.Controllers
         [HttpGet("badrequest")]
         public ActionResult GetBadRequest()
         {
-            return BadRequest();
+            return BadRequest(new ApiResponse(418));
         }
         
         [HttpGet("badrequest/{id}")]
