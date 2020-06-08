@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -26,7 +27,11 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Product>>> GetProductsAsync()
         {
-            IReadOnlyList<Product> products = await _productsRepo.ListAllAsync();
+            
+            // ReSharper disable once SuggestVarOrType_SimpleTypes
+            var spec = new ProductsWithTypesAndBrandsSpecification();
+            
+            IReadOnlyList<Product> products = await _productsRepo.ListAsync(spec);
 
             return Ok(products);
         }
