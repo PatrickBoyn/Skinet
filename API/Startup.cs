@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 namespace API
 {
@@ -24,6 +25,14 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSwaggerGen(c =>
+                                   {
+                                       c.SwaggerDoc("v1", new OpenApiInfo
+                                       {
+                                           Title = "Skinet Api",
+                                           Version = "v1"
+                                       });
+                                   });
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
              // You need both the interface and the concrete implementation.
@@ -81,6 +90,14 @@ namespace API
             
             app.UseAuthorization();
 
+            app.UseSwagger();
+
+            app.UseSwaggerUI(x =>
+                             {
+                                 x.SwaggerEndpoint("/swagger/v1/swagger.json",
+                                                   "Skinet API v1");
+                             });
+            
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
