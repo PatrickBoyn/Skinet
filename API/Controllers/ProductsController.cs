@@ -31,11 +31,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProductsAsync()
+        public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProductsAsync(string sort, int? brandId, int? typeId)
         {
             
             // ReSharper disable once SuggestVarOrType_SimpleTypes
-            var spec = new ProductsWithTypesAndBrandsSpecification();
+            var spec = new ProductsWithTypesAndBrandsSpecification(sort, brandId, typeId);
             
             IReadOnlyList<Product> products = await _productsRepo.ListAsync(spec);
 
