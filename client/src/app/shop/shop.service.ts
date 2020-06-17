@@ -22,17 +22,19 @@ export class ShopService {
 
     let params = new HttpParams();
 
-    if (brandId){
+    if (brandId !== 0){
       params = params.append('brandId', brandId.toString());
     }
 
-    if (typeId){
+    if (typeId !== 0){
       params = params.append('typeId', typeId.toString());
     }
 
-    if (sort){
-      params = params.append('sort', sort);
-    }
+    params = params.append('sort', sort);
+
+    params = params.append('pageIndex', shopParams.pageNumber.toString());
+
+    params = params.append('pageIndex', shopParams.pageSize.toString());
 
     return this.http.get<IPagination>(`${this.baseUrl}products`, {observe: 'response', params})
       .pipe(
