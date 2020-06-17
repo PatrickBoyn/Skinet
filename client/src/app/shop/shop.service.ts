@@ -4,6 +4,7 @@ import {IPagination} from '../shared/models/pagination';
 import {IBrand} from '../shared/models/brand';
 import {IType} from '../shared/models/productType';
 import {map} from 'rxjs/operators';
+import {ShopParams} from '../shared/models/shopParams';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,10 @@ export class ShopService {
   }
 
 
-  getProducts = (brandId?: number, typeId?: number, sort?: string) => {
+  getProducts = (shopParams: ShopParams) => {
+    // So that I don't have to change anything beyond adding shopParams.
+    const {brandId, typeId, sort} = shopParams;
+
     let params = new HttpParams();
 
     if (brandId){
