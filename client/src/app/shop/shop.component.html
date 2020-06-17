@@ -11,7 +11,7 @@
       <h5 class="text-warning ml-3">Brand</h5>
       <ul class="list-group my-3">
         <li class="list-group-item"
-            [class.active]="brand.id === this.brandIdSelected"
+            [class.active]="brand.id === this.shopParams.brandId"
             [value]="brand.id"
             (click)="onBrandSelected(brand.id)"
             *ngFor="let brand of brands">{{brand.name}}</li>
@@ -20,7 +20,7 @@
       <h5 class="text-warning ml-3">Types</h5>
       <ul class="list-group my-3">
         <li class="list-group-item"
-            [class.active]="t.id === this.typeIdSelected"
+            [class.active]="t.id === this.shopParams.typeId"
             [value]="t.id"
             (click)="onTypeSelected(t.id)"
             *ngFor="let t of types">{{t.name}}</li>
@@ -48,7 +48,7 @@
 
       <div class="d-flex justify-content-center">
         <pagination [boundaryLinks]="true"
-                    [totalItems]="77"
+                    [totalItems]="this.totalCount"
                     previousText="&lsaquo;"
                     nextText="&rsaquo;"
                     firstText="&laquo;"
