@@ -4,6 +4,7 @@ import {ShopService} from './shop.service';
 import {IBrand} from '../shared/models/brand';
 import {IType} from '../shared/models/productType';
 import {ShopParams} from '../shared/models/shopParams';
+import {tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-shop',
@@ -32,10 +33,11 @@ export class ShopComponent implements OnInit {
   }
 
   getProducts = () => {
+    let { pageNumber, pageSize } = this.shopParams;
     this.shopService.getProducts(this.shopParams).subscribe(response => {
       this.products = response.data;
-      this.shopParams.pageNumber = response.pageIndex;
-      this.shopParams.pageSize = response.pageSize;
+      pageNumber = response.pageIndex;
+      pageSize = response.pageSize;
       this.totalCount = response.count;
     }, error => {
       console.log(error);
@@ -43,13 +45,13 @@ export class ShopComponent implements OnInit {
   }
 
   getBrands = () => {
-    this.shopService.getBrands().subscribe(response => {
+    this.shopService.getBrands().pipe(tap(res => console.log(res))).subscribe(response => {
       this.brands = [{id: 0, name: 'All'}, ...response];
       }, error => console.log(error));
   }
 
   getTypes = () => {
-    this.shopService.getTypes().subscribe(response => {
+    this.shopService.getTypes().pipe(tap(res => console.log(res))).subscribe(response => {
       this.types = [{id: 0, name: 'All'}, ...response];
     }, error => console.log(error));
   }
