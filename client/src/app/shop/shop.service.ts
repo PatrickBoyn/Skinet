@@ -18,16 +18,21 @@ export class ShopService {
 
   getProducts = (shopParams: ShopParams) => {
     // So that I don't have to change anything beyond adding shopParams.
-    const {brandId, typeId, sort} = shopParams;
+    const {brandId, typeId, sort, search} = shopParams;
 
     let params = new HttpParams();
 
+    // Doesn't seem to work right unless it's greater than 0.
     if (brandId > 0){
       params = params.append('brandId', brandId.toString());
     }
 
     if (typeId !== 0){
       params = params.append('typeId', typeId.toString());
+    }
+
+    if (search){
+      params = params.append('search', search);
     }
 
     params = params.append('sort', sort);
