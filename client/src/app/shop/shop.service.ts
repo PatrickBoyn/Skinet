@@ -22,7 +22,7 @@ export class ShopService {
 
     let params = new HttpParams();
 
-    if (brandId !== 0){
+    if (brandId > 0){
       params = params.append('brandId', brandId.toString());
     }
 
